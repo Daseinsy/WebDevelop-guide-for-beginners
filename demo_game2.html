@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>🏞️ GERALT · SIDE RUNNER</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            background: #0b1a1f;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px 10px;
+            font-family: 'Segoe UI', 'Consolas', monospace;
+        }
+        .game-container {
+            background: #1e3a3f;
+            padding: 20px 20px 25px;
+            border-radius: 32px;
+            box-shadow: 0 16px 32px rgba(0,0,0,0.6);
+            border: 1px solid #5f9b9e;
+        }
+        canvas {
+            border: none;
+            border-radius: 20px;
+            background-color: #aad0d5; /* fallback */
+            box-shadow: inset 0 0 0 2px #2e5a5f, 0 8px 0 #0e2a2e;
+            display: block;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 480px;
+            height: auto;
+            image-rendering: crisp-edges; /* pixel style */
+        }
+        .control-panel {
+            text-align: center;
+            width: 100%;
+            max-width: 480px;
+            margin-top: 18px;
+        }
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin: 6px 0;
+        }
+        .ctrl-btn {
+            background: #2e4c42;
+            border: none;
+            border-bottom: 5px solid #14211c;
+            color: #f3e9c0;
+            font-weight: bold;
+            font-size: 1.3rem;
+            padding: 10px 22px;
+            min-width: 80px;
+            border-radius: 60px;
+            box-shadow: 0 4px 0 #0e1e18, 0 6px 8px rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-family: 'Consolas', monospace;
+            letter-spacing: 1px;
+            transition: all 0.04s ease;
+            touch-action: manipulation;
+            user-select: none;
+        }
+        .ctrl-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #0e1e18, 0 4px 8px rgba(0,0,0,0.3);
+            border-bottom-width: 2px;
+        }
+        .special-btn {
+            background: #6a4e39;
+            border-bottom-color: #3a2b1f;
+            color: #ffecb3;
+        }
+        .info-text {
+            color: #cbdad5;
+            margin: 16px 0 6px;
+            font-size: 0.95rem;
+            font-style: italic;
+            text-shadow: 2px 2px 0 #14211c;
+        }
+        .info-text strong {
+            color: #fdd38e;
+        }
+        /* Placeholder styling for missing images — game still runs with graceful fallback */
+    </style>
+</head>
+<body onload="startGame()">
+<div class="game-container">
+    <!-- Canvas will be inserted here by myGameArea.start() -->
+    <div class="control-panel">
+        <div class="button-row">
+            <button class="ctrl-btn" onmousedown="move('up')" onmouseup="clearmove()" ontouchstart="move('up')" ontouchend="clearmove()">▲ UP</button>
+        </div>
+        <div class="button-row">
+            <button class="ctrl-btn" onmousedown="move('left')" onmouseup="clearmove()" ontouchstart="move('left')" ontouchend="clearmove()">◀ LEFT</button>
+            <button class="ctrl-btn" onmousedown="move('right')" onmouseup="clearmove()" ontouchstart="move('right')" ontouchend="clearmove()">RIGHT ▶</button>
+        </div>
+        <div class="button-row">
+            <button class="ctrl-btn" onmousedown="move('down')" onmouseup="clearmove()" ontouchstart="move('down')" ontouchend="clearmove()">▼ DOWN</button>
+            <button class="ctrl-btn special-btn" onmousedown="accelerate(-0.2)" onmouseup="accelerate(0.1)" ontouchstart="accelerate(-0.2)" ontouchend="accelerate(0.1)">⚡ ACCEL</button>
+        </div>
+        <p class="info-text">
+            <strong>←→</strong> move · <strong>↑↓</strong> vertical · avoid green pipes · <strong>ACCEL</strong> changes gravity
+        </p>
+    </div>
+</div>
+<p style="color:#a7bfb3; margin-top:10px; text-align:center; max-width:480px;">⚔️ The red square spins and drifts · yellow & blue float · background scrolls</p>
+
+<script>
+    (function(){
+        // ---------- GLOBAL GAME OBJECTS ----------
+        var myGamePiece, blueGamePiece, yellowGamePiece;
+        var redGamePiece;
+        var myObstacles = [];
+        var myScore;
+        var myBackground;
+        var mySound;
+        var myMusic;
+
+        // Helper: create a colored dataURI if images are missing (so game still shows something)
+        function fallbackImageURI(color, text) {
+            var canvas = document.createElement('canvas');
+            canvas.width = 30; canvas.height = 30;
+            var ctx = canvas.getContext('2d');
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, 30, 30);
+            ctx.fillStyle = '#111';
+            ctx.font = 'bold 14px Consolas';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text||'?', 15, 15);
+            return canvas.toDataURL('image/png');
+        }
+        function fallbackBgURI() {
+            var canvas = document.createElement('canvas');
+            canvas.width = 656; canvas.height = 270;
+            var ctx = canvas.getContext('2d');
+            // gradient landscape
+            var grd = ctx.createLinearGradient(0, 0, 656, 270);
+            grd.addColorStop(0, '#7ec0c4');
+            grd.addColorStop(0.5, '#3b7a7e');
+            grd.addColorStop(1, '#1c4a4f');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, 656, 270);
+            // draw some clouds / mountains
+            ctx.fillStyle = '#b3dfd9';
+            ctx.beginPath();
+            ctx.arc(120, 50, 35, 0, Math.PI*2);
+            ctx.arc(180, 70, 30, 0, Math.PI*2);
+            ctx.fill();
+            ctx.fillStyle = '#58877c';
+            ctx.beginPath();
+            ctx.moveTo(500,120); ctx.lineTo(560,50); ctx.lineTo(620,120); ctx.fill();
+            return canvas.toDataURL('image/png');
+        }
+
+        component = function(width, height, color, x, y, type) {
+            // pre-process: if type image/background and color starts with "images/", we'll try to load,
+            // but if it fails we replace with fallback (handled inside using onerror)
+            this.type = type;
+            this.width = width;
+            this.height = height;
+            this.speedX = 0;
+            this.speedY = 0;
+            this.x = x;
+            this.y = y;
+            this.gravity = 0.05;
+            this.gravitySpeed = 0;
+            this.bounce = 0.6;
+            this.angle = 0; // for red square rotation
+
+            var self = this;
+
+            if (type === "image" || type === "background") {
+                this.image = new Image();
+                // set crossOrigin if needed (not strictly necessary for local)
+                this.image.src = color;
+                // fallback if image fails to load
+                this.image.onerror = function() {
+                    if (self.type === "background") {
+                        self.image.src = fallbackBgURI();
+                    } else {
+                        // Geralt fallback: white haired icon
+                        self.image.src = fallbackImageURI('#7a8f9a', '⚔️');
+                    }
+                };
+            } else {
+                this.color = color;   // store for fillStyle
+            }
+
+            this.update = function () {
+                var ctx = myGameArea.context;
+                if (type === "image" || type === "background") {
+                    // draw the image (might be fallback)
+                    if (this.image.complete && this.image.naturalWidth > 0) {
+                        ctx.drawImage(this.image, this.x, this.y, this.width, this.height);
+                    } else {
+                        // if still loading, draw placeholder
+                        ctx.fillStyle = (type==="background") ? '#3c6e73' : '#aaa';
+                        ctx.fillRect(this.x, this.y, this.width, this.height);
+                    }
+                    if (type === "background") {
+                        // seamless scrolling: draw second copy
+                        if (this.image.complete) {
+                            ctx.drawImage(this.image, this.x + this.width, this.y, this.width, this.height);
+                        } else {
+                            ctx.fillStyle = '#3c6e73';
+                            ctx.fillRect(this.x + this.width, this.y, this.width, this.height);
+                        }
+                    }
+                } else if (type === "square") {
+                    // rotating red square
+                    ctx.save();
+                    ctx.translate(this.x + this.width/2, this.y + this.height/2);
+                    ctx.rotate(this.angle);
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(-this.width/2, -this.height/2, this.width, this.height);
+                    ctx.restore();
+                } else if (type === "text") {
+                    ctx.font = this.width + " " + this.height;
+                    ctx.fillStyle = color;
+                    ctx.textAlign = "left";
+                    ctx.textBaseline = "top";
+                    ctx.fillText(this.text, this.x, this.y);
+                } else {
+                    // default rectangle (blue/yellow/green obstacles)
+                    ctx.fillStyle = this.color;
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                }
+            };
+
+            this.newPos = function () {
+                this.gravitySpeed += this.gravity;
+                this.x += this.speedX;
+                this.y += this.speedY + this.gravitySpeed;
+                this.hitBottom();
+                if (this.type === "background") {
+                    if (this.x <= -this.width) {
+                        this.x = 0;
+                    }
+                }
+            };
+
+            this.hitBottom = function () {
+                var rockbottom = myGameArea.canvas.height - this.height;
+                if (this.y > rockbottom) {
+                    this.y = rockbottom;
+                    this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+                }
+                // also prevent going above top (optional)
+                if (this.y < 0) {
+                    this.y = 0;
+                    this.gravitySpeed = 0;
+                }
+            };
+
+            this.crashWith = function (otherobj) {
+                var myleft = this.x;
+                var myright = this.x + this.width;
+                var mytop = this.y;
+                var mybottom = this.y + this.height;
+                var otherleft = otherobj.x;
+                var otherright = otherobj.x + otherobj.width;
+                var othertop = otherobj.y;
+                var otherbottom = otherobj.y + otherobj.height;
+                return !(mybottom < othertop || mytop > otherbottom || myright < otherleft || myleft > otherright);
+            };
+        };
+
+        // sound constructor with graceful error handling
+        function sound(src) {
+            this.sound = document.createElement("audio");
+            this.sound.src = src;
+            this.sound.setAttribute("preload", "auto");
+            this.sound.style.display = "none";
+            document.body.appendChild(this.sound);
+            this.play = function () {
+                var p = this.sound.play();
+                if (p !== undefined) {
+                    p.catch(e => { /* ignore autoplay restrictions, game still works */ });
+                }
+            };
+            this.stop = function () {
+                this.sound.pause();
+            };
+        }
+
+        // ---------- GAME AREA ----------
+        var myGameArea = {
+            canvas: document.createElement("canvas"),
+            start: function () {
+                this.canvas.width = 480;
+                this.canvas.height = 270;
+                this.context = this.canvas.getContext("2d");
+                // insert canvas at the beginning of body (but we want inside container)
+                var container = document.querySelector('.game-container');
+                container.insertBefore(this.canvas, container.firstChild);
+                this.frameNo = 0;
+                this.interval = setInterval(updateGameArea, 20);
+                this.keys = [];
+                
+                window.addEventListener('keydown', function (e) {
+                    // prevent arrow scrolling
+                    if ([37,38,39,40].indexOf(e.keyCode) > -1) {
+                        e.preventDefault();
+                    }
+                    myGameArea.keys[e.keyCode] = true;
+                });
+                window.addEventListener('keyup', function (e) {
+                    if ([37,38,39,40].indexOf(e.keyCode) > -1) {
+                        e.preventDefault();
+                    }
+                    myGameArea.keys[e.keyCode] = false;
+                });
+                // also prevent touch events from causing page zoom etc
+            },
+            clear: function () {
+                this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            },
+            stop: function () {
+                clearInterval(this.interval);
+                if (myMusic) myMusic.stop();
+            }
+        };
+
+        function everyinterval(n) {
+            return (myGameArea.frameNo / n) % 1 === 0;
+        }
+
+        function accelerate(n) {
+            if (myGamePiece) {
+                myGamePiece.gravity = n;
+            }
+        }
+
+        // move functions for buttons
+        function move(dir) {
+            if (!myGamePiece) return;
+            // switch image to geralt (if original exists, else fallback already handled)
+            myGamePiece.image.src = "images/geralt.png";
+            if (dir === "up") { myGamePiece.speedY = -1.5; }      // slightly snappier
+            if (dir === "down") { myGamePiece.speedY = 1.5; }
+            if (dir === "left") { myGamePiece.speedX = -1.5; }
+            if (dir === "right") { myGamePiece.speedX = 1.5; }
+        }
+
+        function clearmove() {
+            if (!myGamePiece) return;
+            myGamePiece.image.src = "images/star.jpg";
+            myGamePiece.speedX = 0;
+            myGamePiece.speedY = 0;
+        }
+
+        // start game initialization
+        function startGame() {
+            // create pieces
+            myGamePiece = new component(30, 30, "images/geralt.png", 10, 120, "image");
+            myBackground = new component(656, 270, "images/fengjing.jpg", 0, 0, "background");
+            
+            // sounds (will fail gracefully if missing)
+            mySound = new sound("sound/bounce.mp3");
+            myMusic = new sound("sound/music.mp3");
+            myMusic.play();
+            
+            redGamePiece = new component(30, 30, "red", 80, 75, "square");
+            blueGamePiece = new component(30, 30, "rgba(0, 0, 255, 0.5)", 110, 120);
+            yellowGamePiece = new component(30, 30, "rgba(255, 255, 0, 0.5)", 160, 120);
+            myScore = new component("30px", "Consolas", "black", 280, 40, "text");
+            myScore.text = "SCORE: 0";
+            
+            myObstacles = [];
+            myGameArea.start();
+        }
+
+        // update loop
+        function updateGameArea() {
+            // collision detection
+            for (var i = 0; i < myObstacles.length; i++) {
+                if (myGamePiece.crashWith(myObstacles[i])) {
+                    mySound.play();
+                    myGameArea.stop();
+                    return;
+                }
+            }
+            
+            myGameArea.clear();
+            
+            // background scroll
+            myBackground.speedX = -1.2;
+            myBackground.newPos();
+            myBackground.update();
+            
+            myGameArea.frameNo++;
+            
+            // generate obstacles (green pipes)
+            if (myGameArea.frameNo === 1 || everyinterval(150)) {
+                var x = myGameArea.canvas.width;
+                var minHeight = 20, maxHeight = 140;
+                var height = Math.floor(Math.random() * (maxHeight - minHeight + 1) + minHeight);
+                var minGap = 60, maxGap = 170;
+                var gap = Math.floor(Math.random() * (maxGap - minGap + 1) + minGap);
+                myObstacles.push(new component(10, height, "green", x, 0));
+                myObstacles.push(new component(10, x - height - gap, "green", x, height + gap));
+            }
+            
+            // move & draw obstacles
+            for (var i = 0; i < myObstacles.length; i++) {
+                myObstacles[i].x -= 2.2;
+                myObstacles[i].update();
+            }
+            // remove offscreen obstacles to keep array small
+            myObstacles = myObstacles.filter(obs => obs.x + obs.width > 0);
+            
+            // keyboard controls (arrows)
+            if (myGamePiece) {
+                myGamePiece.speedX = 0;
+                myGamePiece.speedY = 0;
+                if (myGameArea.keys && myGameArea.keys[37]) { myGamePiece.speedX = -1.8; }
+                if (myGameArea.keys && myGameArea.keys[39]) { myGamePiece.speedX = 1.8; }
+                if (myGameArea.keys && myGameArea.keys[38]) { myGamePiece.speedY = -1.8; }
+                if (myGameArea.keys && myGameArea.keys[40]) { myGamePiece.speedY = 1.8; }
+            }
+            
+            // score update
+            myScore.text = "SCORE: " + myGameArea.frameNo;
+            myScore.update();
+            
+            // update player
+            myGamePiece.newPos();
+            myGamePiece.update();
+            
+            // red square rotation + drift
+            redGamePiece.angle += 1.5 * Math.PI / 180;
+            redGamePiece.x += 0.7;
+            if (redGamePiece.x > myGameArea.canvas.width) redGamePiece.x = -30;
+            redGamePiece.update();
+            
+            // blue & yellow movement (drift)
+            yellowGamePiece.x += 0.8;
+            yellowGamePiece.y -= 0.5;
+            if (yellowGamePiece.y < -30) yellowGamePiece.y = myGameArea.canvas.height;
+            if (yellowGamePiece.x > myGameArea.canvas.width) yellowGamePiece.x = -30;
+            blueGamePiece.x += 0.9;
+            blueGamePiece.y -= 0.4;
+            if (blueGamePiece.y < -30) blueGamePiece.y = myGameArea.canvas.height;
+            if (blueGamePiece.x > myGameArea.canvas.width) blueGamePiece.x = -30;
+            
+            yellowGamePiece.update();
+            blueGamePiece.update();
+        }
+
+        // expose functions to global scope for HTML attributes
+        window.startGame = startGame;
+        window.move = move;
+        window.clearmove = clearmove;
+        window.accelerate = accelerate;
+        window.component = component;
+        window.sound = sound;
+    })();
+</script>
+</body>
+</html>

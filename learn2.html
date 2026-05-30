@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Free Web tutorials">
+    <meta name="keywords" content="HTML, CSS, JavaScript">
+    <meta name="author" content="John Doe">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/learn2.css">
+    <title>HTML Tutorial</title>
+
+</head>
+
+
+
+<body>
+    <nav class="sidebar">
+        <ul>
+            <li><a href="#C1">Chapter 1</a></li>
+            <li><a href="#C2">Chapter 2</a></li>
+            <li><a href="#C3">Chapter 3</a></li>
+            <li><a href="#C4">Chapter 4</a></li>
+        </ul>
+    </nav>
+    <nav class="topbar">
+        <ul>
+            <li><a href="learn.html">Home</a></li>
+            <li><a href="learn2.html">More</a></li>
+            <li><a href="good.html">Contact</a></li>
+            <li><a href="good.html">About</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <div class="main-content">
+            <h1>HTML Tutorial</h1>
+            <h2 id="C1">Links</h2>
+            <!-- <iframe src="learn.html" style="height:500px;;width:100%;" name="iframe_a" title="Iframe Example"></iframe> -->
+            <p><a href="https://www.w3.org/">W3C</a></p>
+            <p><a href="https://www.google.com/">Google</a></p>
+            <a href="https://www.w3.org/">W3C</a>
+            <a href="https://www.google.com/">Google</a>
+            <hr />
+            <h2 id="C2">Links</h2>
+            <div>
+                <img src="images/star.jpg" alt="W3Schools.com">
+                <p>Look at this cool image:</p><img border="0" src="images/star.jpg" alt="Trulli">
+                <a href="https://www.w3.org/" title="Go to W3Schools HTML section">
+                    <img src="images/star.jpg" alt="HTML tutorial" style="width:42px;height:42px;"></a><br />
+                <button onclick="document.location='learn.html'">HTML Tutorial</button>
+            </div>
+            <hr />
+            <h2 id="C3">Links</h2>
+
+            <h2>Image Maps</h2>
+            <p>Click on the croissant to go to a new page and read more about the topic:</p>
+            <img src="images/geralt.png" alt="Geralt" usemap="#map" width="650" height="675">
+            <map name="map">
+
+                <area shape="circle" coords="325,150,50" href="htm/geralt-profile.htm" alt="Geralt of Rivia"
+                    title="The White Wolf">
+
+
+                <area shape="circle" coords="325,250,35" href="htm/wolf-school.htm" alt="Wolf School"
+                    title="School of the Wolf">
+
+
+
+                <area shape="default" href="htm/witcher.htm" alt="The Witcher" title="Learn more about The Witcher">
+            </map>
+
+
+
+
+            <p>The HTML <picture> element allows you to display different pictures for different devices or screen
+                    sizes.
+            </p>
+            <picture>
+                <source media="(min-width: 650px)" srcset="images/star.jpg">
+                <source media="(min-width: 465px)" srcset="images/star.jpg">
+                <img src="images/star.jpg">
+            </picture><br />
+            <div style="text-align:center">
+                <button onclick="playPause()">Play/Pause</button>
+                <button onclick="makeBig()">Big</button>
+                <button onclick="makeSmall()">Small</button>
+                <button onclick="makeNormal()">Normal</button>
+                <br><br>
+                <video id="videos1" width="420" autoplay muted loop>
+                    <source src="https://download.blender.org/peach/bigbuckbunny_movies/BigBuckBunny_640x360.m4v" type="video/mp4">
+
+                    Your browser does not support HTML video.
+                </video>
+            </div>
+
+
+            <p>
+                Video courtesy of
+                <a href="https://www.bigbuckbunny.org/" target="_blank">(c) copyright 2008, Blender Foundation /
+                    [www.bigbuckbunny.org]</a>.
+            </p>
+            <hr />
+            <h2 id="C4">Links</h2>
+
+            <p>Drag this image into the rectangle:</p>
+
+            <div id="div1" ondrop="dropHandler(event)" ondragover="dragoverHandler(event)"></div>
+            <br>
+            <img id="img1" src="images/fengjing.jpg" draggable="true" ondragstart="dragstartHandler(event)">
+            <br />
+            <canvas id="myCanvas" width="200" height="100" style="border:1px solid #d3d3d3;">
+                Your browser does not support the HTML canvas tag.</canvas>
+            <svg height="130" width="500">
+                <defs>
+                    <linearGradient id="grad1">
+                        <stop offset="0%" stop-color="yellow" />
+                        <stop offset="100%" stop-color="red" />
+                    </linearGradient>
+                </defs>
+                <ellipse cx="100" cy="70" rx="85" ry="55" fill="url(#grad1)" />
+                <text fill="#ffffff" font-size="45" font-family="Verdana" x="50" y="86">SVG</text>
+                Sorry, your browser does not support inline SVG.
+            </svg>
+            <div onload="MM_preloadImages('guangming.jpg','geralt.png')" style="all:revert;">
+                <p><a href="good.html"><img src="images/guangming.jpg" name="White" id="White"
+                            onmouseover="MM_swapImage('White','','images/geralt.png','Black','','images/guangming.jpg',1)"
+                            onmouseout="MM_swapImgRestore()" /></a></p>
+                <p><a href="ceshi.html"><img src="images/geralt.png" name="Black" id="Black" /></a>
+                </p>
+            </div>
+            <script src="script/script_img.js"></script>
+        </div>
+    </div>
+</body>
+
+
+
+
+</html>

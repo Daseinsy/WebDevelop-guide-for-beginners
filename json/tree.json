@@ -1,0 +1,546 @@
+[
+  {
+    "name": "1.Book",
+    "type": "folder",
+    "children": [
+      {
+        "name": "Reading notes",
+        "type": "folder"
+      },
+      {
+        "name": "English",
+        "type": "folder"
+      },
+      {
+        "name": "Course",
+        "type": "folder"
+      },
+      {
+        "name": "Chinese",
+        "type": "folder"
+      },
+      {
+        "name": "Japanese",
+        "type": "folder"
+      },
+      {
+        "name": "Lyrics.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "Book.xlsx",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "2.Documentary",
+    "type": "folder",
+    "children": [
+      {
+        "name": "History",
+        "type": "folder"
+      },
+      {
+        "name": "games.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "games_ns.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "Fiction Documentary.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "films.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "Music.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "channel.xlsx",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "3.essay",
+    "type": "folder",
+    "children": [
+      {
+        "name": "Scan",
+        "type": "folder"
+      },
+      {
+        "name": "smallbackup",
+        "type": "folder",
+        "children": [
+          {
+            "name": "medical20.txt",
+            "type": "file"
+          },
+          {
+            "name": "Appli.txt",
+            "type": "file"
+          },
+          {
+            "name": "Lit.txt",
+            "type": "file"
+          },
+          {
+            "name": "Medical.txt",
+            "type": "file"
+          },
+          {
+            "name": "physio1.md",
+            "type": "file"
+          },
+          {
+            "name": "physio4.md",
+            "type": "file"
+          },
+          {
+            "name": "physio2.md",
+            "type": "file"
+          },
+          {
+            "name": "Medical19.md",
+            "type": "file"
+          },
+          {
+            "name": "physio5.md",
+            "type": "file"
+          },
+          {
+            "name": "appli1.md",
+            "type": "file"
+          },
+          {
+            "name": "Medical18.md",
+            "type": "file"
+          },
+          {
+            "name": "Medical17.md",
+            "type": "file"
+          },
+          {
+            "name": "code7.md",
+            "type": "file"
+          },
+          {
+            "name": "code6.md",
+            "type": "file"
+          },
+          {
+            "name": "meical14.md",
+            "type": "file"
+          },
+          {
+            "name": "meical13.md",
+            "type": "file"
+          },
+          {
+            "name": "physio3.md",
+            "type": "file"
+          },
+          {
+            "name": "meical10.md",
+            "type": "file"
+          },
+          {
+            "name": "meical9.md",
+            "type": "file"
+          },
+          {
+            "name": "meical8.md",
+            "type": "file"
+          },
+          {
+            "name": "meical12.md",
+            "type": "file"
+          },
+          {
+            "name": "meical11.md",
+            "type": "file"
+          },
+          {
+            "name": "phys2.md",
+            "type": "file"
+          },
+          {
+            "name": "phys1.md",
+            "type": "file"
+          },
+          {
+            "name": "appli2.md",
+            "type": "file"
+          },
+          {
+            "name": "appli 1.md",
+            "type": "file"
+          },
+          {
+            "name": "meical7.md",
+            "type": "file"
+          },
+          {
+            "name": "meical6.md",
+            "type": "file"
+          },
+          {
+            "name": "meical5.md",
+            "type": "file"
+          },
+          {
+            "name": "meical4.md",
+            "type": "file"
+          },
+          {
+            "name": "meical3.md",
+            "type": "file"
+          },
+          {
+            "name": "meical2.md",
+            "type": "file"
+          },
+          {
+            "name": "meical1.md",
+            "type": "file"
+          },
+          {
+            "name": "medical16.md",
+            "type": "file"
+          },
+          {
+            "name": "lit8.md",
+            "type": "file"
+          },
+          {
+            "name": "lit5.md",
+            "type": "file"
+          },
+          {
+            "name": "medical15.md",
+            "type": "file"
+          },
+          {
+            "name": "medical14.md",
+            "type": "file"
+          },
+          {
+            "name": "medical11.md",
+            "type": "file"
+          },
+          {
+            "name": "appli1 (4).md",
+            "type": "file"
+          },
+          {
+            "name": "appli1 (3).md",
+            "type": "file"
+          },
+          {
+            "name": "software2.md",
+            "type": "file"
+          },
+          {
+            "name": "code2.md",
+            "type": "file"
+          },
+          {
+            "name": "software4.md",
+            "type": "file"
+          },
+          {
+            "name": "software3.md",
+            "type": "file"
+          },
+          {
+            "name": "medical13.md",
+            "type": "file"
+          },
+          {
+            "name": "medical12.md",
+            "type": "file"
+          },
+          {
+            "name": "develop5.md",
+            "type": "file"
+          },
+          {
+            "name": "medical10.md",
+            "type": "file"
+          },
+          {
+            "name": "medical9.md",
+            "type": "file"
+          },
+          {
+            "name": "medical8.md",
+            "type": "file"
+          },
+          {
+            "name": "medical7.md",
+            "type": "file"
+          },
+          {
+            "name": "medical6.md",
+            "type": "file"
+          },
+          {
+            "name": "medical5.md",
+            "type": "file"
+          },
+          {
+            "name": "medical4.md",
+            "type": "file"
+          },
+          {
+            "name": "medical3.md",
+            "type": "file"
+          },
+          {
+            "name": "appli1.md",
+            "type": "file"
+          },
+          {
+            "name": "develop4.md",
+            "type": "file"
+          },
+          {
+            "name": "develop3.md",
+            "type": "file"
+          },
+          {
+            "name": "develop1.md",
+            "type": "file"
+          },
+          {
+            "name": "develop2.md",
+            "type": "file"
+          },
+          {
+            "name": "code1.md",
+            "type": "file"
+          },
+          {
+            "name": "software1.md",
+            "type": "file"
+          },
+          {
+            "name": "medical2.md",
+            "type": "file"
+          },
+          {
+            "name": "medical1.md",
+            "type": "file"
+          },
+          {
+            "name": "lit1.md",
+            "type": "file"
+          },
+          {
+            "name": "lit2.md",
+            "type": "file"
+          }
+        ]
+      },
+      {
+        "name": "My Creation",
+        "type": "folder"
+      },
+      {
+        "name": "Lit.md",
+        "type": "file"
+      },
+      {
+        "name": "Appli.md",
+        "type": "file"
+      },
+      {
+        "name": "code.md",
+        "type": "file"
+      },
+      {
+        "name": "medical.md",
+        "type": "file"
+      },
+      {
+        "name": "software.md",
+        "type": "file"
+      },
+      {
+        "name": "physio.md",
+        "type": "file"
+      },
+      {
+        "name": "medical2.md",
+        "type": "file"
+      },
+      {
+        "name": "dmedical.md",
+        "type": "file"
+      },
+      {
+        "name": "Develop.md",
+        "type": "file"
+      },
+      {
+        "name": "Food maker.xlsx",
+        "type": "file"
+      },
+      {
+        "name": "Thought(1).md",
+        "type": "file"
+      },
+      {
+        "name": "Thoughts 0.md",
+        "type": "file"
+      },
+      {
+        "name": "Yuanxue.md",
+        "type": "file"
+      },
+      {
+        "name": "Thoughts 3 Now.md",
+        "type": "file"
+      },
+      {
+        "name": "Troubleshooting page refresh problems.md",
+        "type": "file"
+      },
+      {
+        "name": "Examination-oriented learning 2.md",
+        "type": "file"
+      },
+      {
+        "name": "Exam-oriented learning 1.md",
+        "type": "file"
+      },
+      {
+        "name": "Spiritual Chapter.md",
+        "type": "file"
+      },
+      {
+        "name": "Body Chapter.md",
+        "type": "file"
+      },
+      {
+        "name": "Emotions.md",
+        "type": "file"
+      },
+      {
+        "name": "Knowledge0.md",
+        "type": "file"
+      }
+    ]
+  },
+  {
+    "name": "4.phi",
+    "type": "folder"
+  },
+  {
+    "name": "5.lit and soci",
+    "type": "folder",
+    "children": [
+      {
+        "name": "Language",
+        "type": "folder"
+      },
+      {
+        "name": "Lit",
+        "type": "folder"
+      },
+      {
+        "name": "Politic",
+        "type": "folder"
+      },
+      {
+        "name": "Music",
+        "type": "folder"
+      }
+    ]
+  },
+  {
+    "name": "6.sci and enti-tech",
+    "type": "folder",
+    "children": [
+      {
+        "name": "Geography",
+        "type": "folder"
+      },
+      {
+        "name": "physic",
+        "type": "folder"
+      },
+      {
+        "name": "math",
+        "type": "folder"
+      }
+    ]
+  },
+  {
+    "name": "7.appli",
+    "type": "folder",
+    "children": [
+      {
+        "name": "Economic",
+        "type": "folder"
+      },
+      {
+        "name": "Application",
+        "type": "folder"
+      },
+      {
+        "name": "Develop",
+        "type": "folder"
+      }
+    ]
+  },
+  {
+    "name": "X.filter",
+    "type": "folder",
+    "children": [
+      {
+        "name": "filter",
+        "type": "folder"
+      },
+      {
+        "name": "Logseq",
+        "type": "folder"
+      },
+      {
+        "name": "Junior",
+        "type": "folder"
+      },
+      {
+        "name": "Senior",
+        "type": "folder"
+      },
+      {
+        "name": "Adult",
+        "type": "folder"
+      },
+      {
+        "name": "Old",
+        "type": "folder"
+      },
+      {
+        "name": "Cards",
+        "type": "folder"
+      },
+      {
+        "name": "The past notes I didn't organize are actually a book.txt",
+        "type": "file"
+      },
+      {
+        "name": "It's just a bunch of random knowledge trivia and collectible souvenirs..txt",
+        "type": "file"
+      }
+    ]
+  }
+]

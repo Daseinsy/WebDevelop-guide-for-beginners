@@ -1,0 +1,117 @@
+
+
+// Test: View the number of currently selected root folders
+const roots = document.querySelectorAll('body > ul > li');
+console.log('找到根文件夹数量:', roots.length);
+roots.forEach((li, i) => {
+    const name = li.querySelector(':scope > div.folder')?.childNodes[0]?.nodeValue?.trim();
+    console.log(`${i + 1}. ${name}`);
+});
+
+
+
+/**
+ * Clean text: remove extra whitespace, line breaks, tabs
+ */
+function cleanText(text) {
+    if (!text) return '';
+    return text.replace(/\s+/g, ' ').trim();
+}
+
+/**
+ * Parse a single folder node (li element)
+ */
+function parseFolderNode(liElement) {
+    // Get the div where the folder name is located
+    const folderDiv = liElement.querySelector(':scope > div.folder');
+    if (!folderDiv) return null;
+
+    // Extract plain text names (traverse all text nodes, clean after splicing)
+    let name = '';
+    for (const node of folderDiv.childNodes) {
+        if (node.nodeType === Node.TEXT_NODE) {
+            name += node.nodeValue;
+        }
+    }
+    name = cleanText(name);
+
+    // Skip folders with empty names (such as the 9th undefined)
+    if (!name) return null;
+
+    const node = {
+        name: name,
+        type: 'folder',
+        children: []
+    };
+
+    // Find children ul.nested
+    const nestedUl = liElement.querySelector(':scope > ul.nested');
+    if (!nestedUl) return node;
+
+    // Traverse sub-li
+    nestedUl.querySelectorAll(':scope > li').forEach(childLi => {
+        // Determine whether it is a folder or a file
+        if (childLi.querySelector(':scope > div.folder')) {
+            // Process subfolders recursively
+            const childFolder = parseFolderNode(childLi);
+            if (childFolder) node.children.push(childFolder);
+        } else {
+            // Process files (clean up extra whitespace in filenames)
+            const fileName = cleanText(childLi.textContent);
+            if (fileName) {
+                node.children.push({
+                    name: fileName,
+                    type: 'file'
+                });
+            }
+        }
+    });
+
+    return node;
+}
+
+/**
+ * Parse the entire directory tree (all root-level folders)
+ */
+// Extract sorted numbers
+function extractSortNumber(name) {
+    const match = name.match(/^(\d+)/);
+    return match ? parseInt(match[1], 10) : Infinity;
+}
+function parseEntireTree() {
+    const rootFolders = [];
+
+    // Select all root folders (body > ul > li)
+    const rootLis = document.querySelectorAll('body > ul > li');
+
+    rootLis.forEach(li => {
+        const folder = parseFolderNode(li);
+        if (folder) rootFolders.push(folder);
+    });
+    // Sort numerically
+    rootFolders.sort((a, b) => extractSortNumber(a.name) - extractSortNumber(b.name));
+    return rootFolders;
+}
+
+// Perform parsing
+const fullTree = parseEntireTree();
+
+// Beautify output and display statistics
+console.log(`✅ 成功解析 ${fullTree.length} 个根文件夹`);
+console.log(JSON.stringify(fullTree, null, 2));
+
+// Download JSON file
+function downloadJSON(data, filename = 'folder-tree.json') {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Automatic download (can be commented out as needed)
+downloadJSON(fullTree, '目录树.json');

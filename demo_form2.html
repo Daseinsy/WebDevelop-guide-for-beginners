@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Refined Information Form · Optimized Version</title>
+    <link rel="stylesheet" href="css/style_form2.css">
+
+</head>
+
+<body>
+
+
+    <div class="form-card">
+        <input type="hidden" id="custId" name="custId" value="3487">
+        <h2>📋 Personal Profile</h2>
+        <div class="subhead">Complete your information · Help us know you better</div>
+
+        <!--Form Area – Optimized from the original structure, with improved semantic grouping.-->
+
+        <form id="profileForm" onsubmit="handleSubmit(event)" autocomplete="on">
+
+            <div class="form-grid">
+                <!-- name -->
+                <div class="field-group">
+                    <label><i>👤</i> Name <span class="required-star">*</span></label>
+                    <input type="text" name="fullname" id="fullname" placeholder="e.g., Zhang Mingxuan" value=""
+                        required>
+                </div>
+
+                <!-- Gender: Uses more user-friendly radio groups. -->
+                <div class="field-group">
+                    <label><i>⚥</i> Gender <span class="required-star">*</span></label>
+                    <div class="radio-group">
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="male" checked> Male
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="female"> Female
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="other"> Other
+                        </label>
+                        <label class="radio-option">
+                            <input type="radio" name="gender" value="prefer-not"> Prefer not to say
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="field-group">
+                    <label><i>📅</i> Birth Date</label>
+                    <input type="date" name="birthdate" id="birthdate" value="2000-01-01">
+                </div>
+
+
+                <div class="field-group">
+                    <label><i>🎓</i> Highest Education</label>
+                    <select name="education" id="education">
+                        <option value="highschool">High School / Vocational</option>
+                        <option value="associate">Associate Degree</option>
+                        <option value="bachelor" selected>Bachelor's Degree</option>
+                        <option value="master">Master's Degree</option>
+                        <option value="doctor">Doctorate</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+
+
+                <div class="field-group">
+                    <label><i>🎯</i> Interests (Multiple Selection)</label>
+                    <div class="checkbox-group">
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="reading" checked> Reading
+                        </label>
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="music"> Music
+                        </label>
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="sports"> Sports
+                        </label>
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="travel"> Travel
+                        </label>
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="gaming"> Gaming
+                        </label>
+                        <label class="check-option">
+                            <input type="checkbox" name="hobby" value="coding"> Coding
+                        </label>
+                    </div>
+                    <span class="inline-hint">At least one selection required to showcase your diverse interests</span>
+                </div>
+
+
+                <div class="field-group">
+                    <label><i>📝</i> Self-Introduction</label>
+                    <textarea name="bio" id="bio"
+                        placeholder="Tell us a bit about yourself… For example, your profession, interests, or a quote you like.">I love exploring new things and always eager to learn.</textarea>
+                </div>
+            </div>
+
+            <!-- Button Area: Provides submit and reset functions (reset clears the form to its initial default values). -->
+            <div class="form-actions">
+                <button type="button" class="btn btn-secondary" onclick="resetFormToDefault()">⟲ Reset</button>
+                <input type="image" src="images/star.jpg" alt="Submit" width="48" height="48" style="all:revert">
+                <button type="submit" class="btn btn-primary">✓ Submit Form</button>
+
+            </div>
+
+            <!-- Real-time Feedback Area (Displays a preview of collected data, simulating the submission effect).  -->
+            <div id="formFeedback" class="demo-note">
+                <strong>📬 Preview:</strong> Fill out the form and click submit to see a summary
+            </div>
+        </form>
+    </div>
+
+    <script src="script/script.js"></script>
+</body>
+
+</html>
